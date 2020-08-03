@@ -1,0 +1,10 @@
+{
+  "xliffmergeOptions": {
+    "apikey": "AIzaSyB9oXhT5y2xG9JTdggYzRCDTcji7u9_-wg",
+    "autotranslate": [
+      "fr-FR"
+    ],
+    "srcDir": "apps/employee-demo-app-wc3/src/locale",
+    "genDir": "apps/employee-demo-app-wc3/src/locale"
+  }
+}
