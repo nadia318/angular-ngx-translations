@@ -1,29 +1,25 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router';
-import { CoreComponent } from './core.component';
-import { coreRoutes } from './core.routing';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { TranslateModule } from '@ngx-translate/core';
+import { FooterComponent } from './components/footer/footer.component';
+import { HeaderComponent } from './components/header/header.component';
 
+import { CoreRoutingModule } from './core-routing.module';
+import { CoreComponent } from './core.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    BrowserModule.withServerTransition({ appId: 'test-app' }),
-    RouterModule.forRoot(coreRoutes, {
-      initialNavigation: 'enabled'
-    }),
-    HttpClientModule,
-    // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
-    // and returns simulated server responses.
-    // Remove it when a real server is ready to receive requests.
-    // HttpClientInMemoryWebApiModule.forRoot(
-    //   InMemoryDataService, { dataEncapsulation: false }
-    // )
+  declarations: [
+    CoreComponent,
+    HeaderComponent,
+    FooterComponent
   ],
-  declarations: [CoreComponent],
-  bootstrap: [ CoreComponent ]
+  imports: [
+    BrowserModule.withServerTransition({ appId: 'talma-app' }),
+    HttpClientModule,
+    CoreRoutingModule,
+    TranslateModule.forChild()
+  ]
 })
-export class CoreModule { }
+export class CoreModule {
+}

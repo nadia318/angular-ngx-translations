@@ -1,3 +1,9 @@
+<button (click)="switchLang()">{{ 'CHANGE_LANGUAGE' | translate }}</button>
+
+<app-header></app-header>
+
+<a [routerLink]="['/about'] | localize" >go about</a>
+
+<p>{{'HOME' | translate}}</p>
+
 <router-outlet></router-outlet>
-<p>core works!</p>
-<a routerLink="home">home</a>

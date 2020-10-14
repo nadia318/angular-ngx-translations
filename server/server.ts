@@ -1,18 +1,17 @@
-import 'zone.js/dist/zone-node';
+import { APP_BASE_HREF } from '@angular/common';
 
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import * as express from 'express';
-import { join } from 'path';
-
-import { AppServerModule } from './src/main.server';
-import { APP_BASE_HREF } from '@angular/common';
 import { existsSync } from 'fs';
+import { join } from 'path';
+import 'zone.js/dist/zone-node';
+
+import { AppServerModule } from '../src/main.server';
 
 // The Express app is exported so that it can be used by serverless Functions.
-export function app() {
-  console.log()
+export function app(): express.Express {
   const server = express();
-  const distFolder = join(process.cwd(), 'dist/angular-test/browser');
+  const distFolder = join(process.cwd(), 'dist/browser');
   const indexHtml = existsSync(join(distFolder, 'index.original.html')) ? 'index.original.html' : 'index';
 
   // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
@@ -24,7 +23,7 @@ export function app() {
   server.set('views', distFolder);
 
   // Example Express Rest API endpoints
-  // app.get('/api/**', (req, res) => { });
+  // server.get('/api/**', (req, res) => { });
   // Serve static files from /browser
   server.get('*.*', express.static(distFolder, {
     maxAge: '1y'
@@ -34,13 +33,12 @@ export function app() {
   server.get('*', (req, res) => {
     res.render(indexHtml, { req, providers: [{ provide: APP_BASE_HREF, useValue: req.baseUrl }] });
   });
-
   return server;
 }
 
-function run() {
+function run(): void {
   const port = process.env.PORT || 4000;
-  console.log()
+
   // Start up the Node server
   const server = app();
   server.listen(port, () => {
@@ -58,4 +56,4 @@ if (moduleFilename === __filename || moduleFilename.includes('iisnode')) {
   run();
 }
 
-export * from './src/main.server';
+export * from '../src/main.server';

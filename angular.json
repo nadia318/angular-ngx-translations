@@ -3,17 +3,30 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "angular-test": {
-      "i18n": {
-        "sourceLocale": "en",
-        "locales": {
-          "fr": "src/locale/messages.fr-FR.xlf"
-        }
-      },
+    "angular-translations": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "skipTests": true
+        },
+        "@schematics/angular:class": {
+          "skipTests": true
+        },
+        "@schematics/angular:directive": {
+          "skipTests": true
+        },
+        "@schematics/angular:guard": {
+          "skipTests": true
+        },
+        "@schematics/angular:module": {
+          "skipTests": true
+        },
+        "@schematics/angular:pipe": {
+          "skipTests": true
+        },
+        "@schematics/angular:service": {
+          "skipTests": true
         }
       },
       "root": "",
@@ -23,7 +36,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/angular-test/browser",
+            "outputPath": "dist/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -35,11 +48,25 @@
             ],
             "styles": [
               "src/styles.scss"
-            ]
+            ],
+            "scripts": []
           },
           "configurations": {
-            "fr": {
-              "localize": ["fr"]
+            "dev": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
             },
             "production": {
               "fileReplacements": [
@@ -74,21 +101,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular-test:build"
+            "browserTarget": "angular-translations:build"
           },
           "configurations": {
-            "fr": {
-              "browserTarget": "angular-test:build:fr"
-            },
             "production": {
-              "browserTarget": "angular-test:build:production"
+              "browserTarget": "angular-translations:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "angular-test:build"
+            "browserTarget": "angular-translations:build"
           }
         },
         "test": {
@@ -114,7 +138,8 @@
             "tsConfig": [
               "tsconfig.app.json",
               "tsconfig.spec.json",
-              "e2e/tsconfig.json"
+              "e2e/tsconfig.json",
+              "tsconfig.server.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -125,22 +150,32 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "angular-test:serve"
+            "devServerTarget": "angular-translations:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "angular-test:serve:production"
+              "devServerTarget": "angular-translations:serve:production"
             }
           }
         },
         "server": {
           "builder": "@angular-devkit/build-angular:server",
           "options": {
-            "outputPath": "dist/angular-test/server",
-            "main": "server.ts",
+            "outputPath": "dist/server",
+            "main": "server/server.ts",
             "tsConfig": "tsconfig.server.json"
           },
           "configurations": {
+            "dev": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
+                }
+              ],
+              "sourceMap": true,
+              "optimization": true
+            },
             "production": {
               "outputHashing": "media",
               "fileReplacements": [
@@ -157,21 +192,21 @@
         "serve-ssr": {
           "builder": "@nguniversal/builders:ssr-dev-server",
           "options": {
-            "browserTarget": "angular-test:build",
-            "serverTarget": "angular-test:server"
+            "browserTarget": "angular-translations:build",
+            "serverTarget": "angular-translations:server"
           },
           "configurations": {
             "production": {
-              "browserTarget": "angular-test:build:production",
-              "serverTarget": "angular-test:server:production"
+              "browserTarget": "angular-translations:build:production",
+              "serverTarget": "angular-translations:server:production"
             }
           }
         },
         "prerender": {
           "builder": "@nguniversal/builders:prerender",
           "options": {
-            "browserTarget": "angular-test:build:production",
-            "serverTarget": "angular-test:server:production",
+            "browserTarget": "angular-translations:build:production",
+            "serverTarget": "angular-translations:server:production",
             "routes": [
               "/"
             ]
@@ -183,7 +218,7 @@
       }
     }
   },
-  "defaultProject": "angular-test",
+  "defaultProject": "angular-translations",
   "cli": {
     "analytics": false
   }

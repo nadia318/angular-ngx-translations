@@ -1,23 +1,29 @@
-import { isPlatformBrowser } from '@angular/common';
-import { BrowserModule } from '@angular/platform-browser';
-import { APP_ID, Inject, NgModule, PLATFORM_ID } from '@angular/core';
-
-
+import { HttpClient } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { CoreComponent } from './core/core.component';
 import { CoreModule } from './core/core.module';
 
+export function createTranslateLoader(http: HttpClient): any {
+
+  return new TranslateHttpLoader(http, './assets/locale/', '.json');
+}
+
 @NgModule({
   imports: [
-    CoreModule,
+    BrowserAnimationsModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    }),
+    CoreModule
   ],
-  bootstrap: [CoreComponent]
+  bootstrap: [CoreComponent],
 })
 export class AppBrowserModule {
-  constructor(
-    @Inject(PLATFORM_ID) private platformId: object,
-    @Inject(APP_ID) private appId: string) {
-    const platform = isPlatformBrowser(platformId) ?
-      'in the browser' : 'on the server';
-    console.log(`Running ${platform} with appId=${appId}`);
-  }
 }
